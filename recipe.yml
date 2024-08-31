@@ -22,6 +22,18 @@ stages:
     - apt-get update
 
   # Put your custom actions behind this comment
+  - name: tailscale-repo
+      type: shell
+      commands:
+        - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.noarmor.gpg | sudo tee /usr/share/keyrings/tailscale-archive-keyring.gpg >/dev/null
+        - curl -fsSL https://pkgs.tailscale.com/stable/debian/sid.tailscale-keyring.list | sudo tee /etc/apt/sources.list.d/tailscale.list
+        - apt update
+
+  - name: tailscale
+    type: apt
+    source:
+      packages:
+      - tailscale
 
   - name: example-packages # Sample module using the built-in Apt module to install packages
     type: apt
